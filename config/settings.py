@@ -56,6 +56,7 @@ X_ADMIN_SUBTITLE = "🔧 Настройки и управление"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # WhiteNoise middleware
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -129,7 +130,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static', 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static', 'staticfiles')
 STATICFILES_DIRS = os.path.join(BASE_DIR, "static"),
 # STATICFILES_STORAGE ='whitenoise.storage.CompressedManifestStaticFilesStorage' # new
 
