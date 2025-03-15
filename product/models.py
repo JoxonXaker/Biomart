@@ -1,5 +1,9 @@
 from django.db import models
+from django_quill.fields import QuillField
 from django.utils.safestring import mark_safe
+
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFill
 
 
 # 1. Dorilar Kategoriyasi modeli
@@ -15,25 +19,34 @@ class CategoryModel(models.Model):
     def __str__(self):
         return self.name
 
+
 # 2. Brend modeli
 class BrandModel(models.Model):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(blank=True, null=True)
     logo = models.ImageField(upload_to='brand_logos/', blank=True, null=True)
-
+    thumbnail = ImageSpecField(
+            source='logo',
+            processors=[ResizeToFill(100, 100)],
+            format='JPEG',
+            options={'quality': 80}
+    )
+    
     class Meta:
         verbose_name = "Бренд"
-        verbose_name_plural = "🅱️ Бренды продукта"
+        verbose_name_plural = "🅱 Бренды продукта"
     
     def __str__(self):
         return self.name
     
     def display_logo(self):
         if self.logo:
-            return mark_safe(f'<img src="{self.logo.url}" width="45" height="45" style="border: 1px solid #e8e8e8;"/>')
+            return mark_safe(f'<a href="{self.logo.url}"><img src="{self.logo.url}" width="45" height="45" style="border: 1px solid #e8e8e8;"/></a>')
         return mark_safe(f'<img src="https://t4.ftcdn.net/jpg/05/21/82/91/360_F_521829166_8Q95OHELrV2GLmhOzStmCO9isNPl5NBy.jpg" width="45" height="45"  style="border: 1px solid #e8e8e8;"/>')
 
     
+
+
 
 # 3. Dori mahsuloti modeli
 class ProductModel(models.Model):
@@ -44,7 +57,7 @@ class ProductModel(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2, help_text="Валюта Узбекистан СУМ*")
     stock = models.PositiveIntegerField()
     image = models.ImageField(upload_to='product_images/', blank=True, null=True)
-    detail = models.TextField(null=True, blank=True)
+    detail = QuillField(null=True, blank=True)
 
     class Meta:
         verbose_name = "Продукт"
@@ -55,12 +68,13 @@ class ProductModel(models.Model):
     
     def display_image(self):
         if self.image:
-            return mark_safe(f'<img src="{self.image.url}" width="45" height="45" style="border: 1px solid #e8e8e8;"/>')
+            return mark_safe(f'<a href="{self.image.url}"><img src="{self.image.url}" width="45" height="45" style="border: 1px solid #e8e8e8;"/></a>')
         # return mark_safe(f'<div style="width: 45px; height: 45px; font-size: 35px">❌</div>')
         return mark_safe(f'<img src="https://t4.ftcdn.net/jpg/05/21/82/91/360_F_521829166_8Q95OHELrV2GLmhOzStmCO9isNPl5NBy.jpg" width="45" height="45"  style="border: 1px solid #e8e8e8;"/>')
 
+
 class ProductImageModel(models.Model):
-    product = models.ForeignKey(ProductModel, related_name='product', on_delete=models.CASCADE, null=True)
+    product = models.ForeignKey(ProductModel, related_name='product', on_delete=models.CASCADE, null=True, blank=True)
     image = models.ImageField(upload_to='product_images/')
 
     class Meta:

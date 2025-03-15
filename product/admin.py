@@ -1,18 +1,50 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
+
 from product.models import CategoryModel, ProductModel, BrandModel, ProductImageModel
-from product.forms import ProductModelForm
+from product.forms import ProductModelForm, BrandModelForm, CategoryModelForm
 
 
 @admin.register(CategoryModel)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'description')
+    # list_display = ('name', 'description')
+    # summernote_fields = ('description',)
+
+    form = CategoryModelForm
+
+    list_display = ('icon_name', 'icon_description')
+    list_display_links = ('icon_name', 'icon_description')
+
+    def icon_name(self, obj):
+        return obj.name
+    
+    def icon_description(self, obj):
+        return obj.description
+    icon_description.short_description = "🏷️ Бренд"
+    
+
+    icon_name.short_description = "📝 Имя Бренд"
+
 
 
 @admin.register(BrandModel)
 class BrandAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'display_logo')
+    form = BrandModelForm
+    readonly_fields = ('display_logo',)
+
+
+    list_display = ('id', 'icon_name', 'icon_display_image')
+    list_display_links = ('id', 'icon_name', )
+
+    def icon_name(self, obj):
+        return obj.name
+    icon_name.short_description = "📝 Имя Бренд"
+
+    def icon_display_image(self, obj):
+        return obj.display_logo()
+        
+    icon_display_image.short_description = "🖼️ Изображение"
 
 
 class ProductImageModelTabularInline(admin.TabularInline):
@@ -28,14 +60,12 @@ class ProductImageModelTabularInline(admin.TabularInline):
 class ProductModelAdmin(admin.ModelAdmin):
     form = ProductModelForm
     
-    # list_display = ('name', 'brand', 'price', 'stock', 'display_image')
-    # list_display_links = ('name', 'brand', 'price', 'stock', 'display_image')
-    
     inlines = [ProductImageModelTabularInline]
-    
+
     filter_horizontal = ('category',)
 
     list_display = ('icon_name', 'icon_brand', 'icon_price', 'icon_stock', 'icon_display_image')
+    list_display_links = ('icon_name', 'icon_brand', 'icon_price', 'icon_stock')
 
     def icon_name(self, obj):
         return obj.name
@@ -54,9 +84,7 @@ class ProductModelAdmin(admin.ModelAdmin):
     icon_stock.short_description = "📦 Количество"
 
     def icon_display_image(self, obj):
-        if obj.image:
-            return mark_safe(f'<img src="{obj.image.url}" width="45" height="45" />')
-        return mark_safe(f'<img src="https://t4.ftcdn.net/jpg/05/21/82/91/360_F_521829166_8Q95OHELrV2GLmhOzStmCO9isNPl5NBy.jpg" width="45" height="45"  style="border: 1px solid #e8e8e8;"/>')
-    
+        return obj.display_image()
+        
     icon_display_image.short_description = "🖼️ Изображение"
 
