@@ -11,6 +11,15 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+CORS_ALLOWED_ORIGINS = [
+    "http://192.168.1.14:3000",
+    "http://192.168.1.12:3000",
+    "http://192.168.1.16:3000",
+    "http://192.168.1.13:3000",
+]
+
+CORS_ALLOW_ALL_ORIGINS = True
+
 
 INSTALLED_APPS = [
     # admin interface
@@ -26,13 +35,22 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # external app
+    'rest_framework',
     'imagekit',
     'django_quill',
+    'django_filters',
+    'corsheaders',
 
 
     # local apps
     'api', 'product'
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 8,  # Default pagination
+}
 
 # admin interface
 X_FRAME_OPTIONS = "SAMEORIGIN"
@@ -41,6 +59,7 @@ X_ADMIN_TITLE = "⚙️ ИНТЕРФЕЙС АДМИНИСТРИРОВАНИЯ"
 X_ADMIN_SUBTITLE = "🔧 Настройки и управление"
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',  # eng yuqoriga yaqin joyga qo‘y
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',  # WhiteNoise middleware
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -56,7 +75,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [''],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

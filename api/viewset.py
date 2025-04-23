@@ -1,0 +1,47 @@
+from rest_framework import viewsets
+from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.decorators import action
+from rest_framework.response import Response
+
+from django.shortcuts import get_object_or_404
+from django.db.models import Prefetch
+
+from django_filters.rest_framework import DjangoFilterBackend
+
+from api.serializer import BrandSerializer, ProductSerializer, CategorySerializer
+from api.filters import ProductFilter, ProductPagination
+
+from product.models import (
+    ProductVariantsModel,
+    ProductImageModel, 
+    CategoryModel, 
+    ProductModel, 
+    BrandModel, 
+)
+
+
+class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = CategoryModel.objects.filter(allowed=True)
+    serializer_class = CategorySerializer
+
+class BrandViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = BrandModel.objects.filter(allowed=True)
+    serializer_class = BrandSerializer
+
+class ProductViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = ProductModel.objects.filter(allowed=True).prefetch_related(
+        Prefetch('variants', queryset=ProductVariantsModel.objects.filter(allowed=True)),
+        Prefetch('images', queryset=ProductImageModel.objects.filter(allowed=True)),
+        'category',
+        'brand',
+    )
+    serializer_class = ProductSerializer
+
+    filterset_class = ProductFilter
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    search_fields = ['name', 'description', 'brand__name', 'detail', 'category__name']
+    ordering_fields = ['price', 'name']  # Sort qilish: ?ordering=price yoki ?ordering=-price (kamayish tartibida)
+    pagination_class = ProductPagination
+
+
+    
