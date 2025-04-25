@@ -94,7 +94,7 @@ class ProductModel(models.Model):
 
 
 
-
+# Product-ni rasmlar modeli
 class ProductImageModel(models.Model):
     allowed = models.BooleanField(default=False, help_text="С помощью этого поля вы разрешаете сайту публиковать", verbose_name="📢 Разрешить")
     product = models.ForeignKey(ProductModel, related_name='images', on_delete=models.CASCADE, null=True, blank=True)
@@ -113,6 +113,7 @@ class ProductImageModel(models.Model):
         return mark_safe(f'<img src="/media/admin-interface/helper/image.png" width="45" height="45" style="border: 1px solid #e8e8e8;"/>')
     
 
+# Productni bir-nechta o`lchamli modeli
 class ProductVariantsModel(models.Model):
     allowed = models.BooleanField(default=False, help_text="С помощью этого поля вы разрешаете сайту публиковать", verbose_name="📢 Разрешить")
     product = models.ForeignKey(ProductModel, related_name='variants', on_delete=models.CASCADE)

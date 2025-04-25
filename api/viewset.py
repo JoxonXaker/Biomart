@@ -19,15 +19,19 @@ from product.models import (
     BrandModel, 
 )
 
-
+# Category viewset
 class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = CategoryModel.objects.filter(allowed=True)
     serializer_class = CategorySerializer
-
+    pagination_class = None 
+    
+# Brand viewset
 class BrandViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = BrandModel.objects.filter(allowed=True)
     serializer_class = BrandSerializer
+    pagination_class = None 
 
+# Product viewset
 class ProductViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = ProductModel.objects.filter(allowed=True).prefetch_related(
         Prefetch('variants', queryset=ProductVariantsModel.objects.filter(allowed=True)),

@@ -10,8 +10,8 @@ from product.forms import ProductModelForm, BrandModelForm, CategoryModelForm
 class CategoryAdmin(admin.ModelAdmin):
     form = CategoryModelForm
 
-    list_display = ('id', 'name', 'description', 'display_image', 'allowed')
-    list_display_links = ('id','name', 'description', )
+    list_display = ('id', 'name', 'display_image', 'allowed')
+    list_display_links = ('id','name', )
     list_editable = ('allowed',)
     readonly_fields = ('display_image',)
 

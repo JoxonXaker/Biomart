@@ -15,8 +15,8 @@ class ProductFilter(django_filters.FilterSet):
         fields = ['category', 'brand', 'min_price', 'max_price']
 
 
-# Pagination - 8 yoki 16 mahsulot per page
+# Pagination - 16 yoki 32 mahsulot per page
 class ProductPagination(PageNumberPagination):
-    page_size = 8  # Default: 8 ta mahsulot
+    page_size = 16  # Default: 16 ta mahsulot
     page_size_query_param = 'per_page'  # URL dan o‘zgartirish: ?per_page=16
-    max_page_size = 16  # Eng ko‘pi bilan 16 ta mahsulot
+    max_page_size = 32  # Eng ko‘pi bilan 16 ta mahsulot

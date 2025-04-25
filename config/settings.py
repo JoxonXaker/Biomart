@@ -16,6 +16,9 @@ CORS_ALLOWED_ORIGINS = [
     "http://192.168.1.12:3000",
     "http://192.168.1.16:3000",
     "http://192.168.1.13:3000",
+    "http://192.168.1.8:3000",
+    "http://127.0.0.1:3000",
+    
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
