@@ -46,7 +46,7 @@ INSTALLED_APPS = [
 
 
     # local apps
-    'api', 'product'
+    'api', 'product', 'dynamic'
 ]
 
 REST_FRAMEWORK = {

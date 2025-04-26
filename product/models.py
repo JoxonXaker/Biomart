@@ -2,7 +2,7 @@ from django.db import models
 from django_quill.fields import QuillField
 from django.utils.safestring import mark_safe
 
-from imagekit.models import ImageSpecField, ProcessedImageField
+from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFill
 
 
