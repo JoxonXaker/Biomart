@@ -8,8 +8,14 @@ from django.db.models import Prefetch
 
 from django_filters.rest_framework import DjangoFilterBackend
 
-from api.serializer import BrandSerializer, ProductSerializer, CategorySerializer
 from api.filters import ProductFilter, ProductPagination
+
+from api.serializer import (
+    BrandSerializer, 
+    ProductListSerializer, 
+    ProductDetailSerializer, 
+    CategorySerializer
+)
 
 from product.models import (
     ProductVariantsModel,
@@ -39,13 +45,16 @@ class ProductViewSet(viewsets.ReadOnlyModelViewSet):
         'category',
         'brand',
     )
-    serializer_class = ProductSerializer
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return ProductListSerializer
+        return ProductDetailSerializer
 
     filterset_class = ProductFilter
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     search_fields = ['name', 'description', 'brand__name', 'detail', 'category__name']
     ordering_fields = ['price', 'name']  # Sort qilish: ?ordering=price yoki ?ordering=-price (kamayish tartibida)
-    pagination_class = ProductPagination
+    pagination_class = None
 
 
     
