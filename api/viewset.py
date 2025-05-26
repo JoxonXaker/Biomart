@@ -3,17 +3,21 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from django.shortcuts import get_object_or_404
+# from django.shortcuts import get_object_or_404
 from django.db.models import Prefetch
 
 from django_filters.rest_framework import DjangoFilterBackend
 
-from api.filters import ProductFilter, ProductPagination
+from api.filters import (
+    ProductFilter, 
+    # ProductPagination,
+    )
 
 from api.serializer import (
     BrandSerializer, 
     ProductListSerializer, 
     ProductDetailSerializer, 
+    ProductVariantSerializer,
     CategorySerializer
 )
 
@@ -57,4 +61,8 @@ class ProductViewSet(viewsets.ReadOnlyModelViewSet):
     pagination_class = None
 
 
-    
+# Variants viewset
+class VariantsViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = ProductVariantsModel.objects.filter(allowed=True)
+    serializer_class = ProductVariantSerializer
+    pagination_class = None

@@ -73,11 +73,12 @@ class ProductModel(models.Model):
     detail = QuillField(null=True, blank=True, verbose_name="🛠 Подробный")
     image = ProcessedImageField(
         upload_to='product_images/',
-        processors=[ResizeToFill(250, 250)],
+        processors=[ResizeToFill(350, 350)],
         format='JPEG',
         options={'quality': 100},
         blank=True,
-        null=True
+        null=True, 
+        verbose_name='📸 Изображение'
     )
 
     class Meta:

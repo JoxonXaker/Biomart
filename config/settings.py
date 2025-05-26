@@ -40,13 +40,14 @@ INSTALLED_APPS = [
     # external app
     'rest_framework',
     'imagekit',
+    'django_ckeditor_5',
     'django_quill',
     'django_filters',
     'corsheaders',
 
 
     # local apps
-    'api', 'product', 'dynamic'
+    'api', 'product', 'dynamic', 'order'
 ]
 
 REST_FRAMEWORK = {
@@ -137,4 +138,6 @@ MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# SKEDITOR SETTINGS
 
