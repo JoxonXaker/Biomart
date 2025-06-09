@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     # external app
     'rest_framework',
     'imagekit',
-    'django_ckeditor_5',
+    # 'django_ckeditor_5',
     'django_quill',
     'django_filters',
     'corsheaders',
