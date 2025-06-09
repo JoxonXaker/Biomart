@@ -36,9 +36,9 @@ class OrderItemInline(admin.TabularInline):
 @admin.register(OrderModel)
 class OrderModelAdmin(admin.ModelAdmin):
     list_display = (
-        'id', 'name', 'phone', 'delivery', 'status', 'date', 'total_price_display'
+        'name', 'phone', 'delivery', 'status', 'date', 'total_price_display'
     )
-    list_display_links = ('id', 'name', 'phone', 'delivery', 'date', 'total_price_display')
+    list_display_links = ('name', 'phone', 'delivery', 'date', 'total_price_display')
     list_filter = ('status', 'delivery', 'date')
     list_editable = ('status',)
     ordering = ('-date',)

@@ -3,8 +3,9 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from django.utils.dateparse import parse_datetime
 from decimal import Decimal
-from .models import OrderModel, OrderItemModel
-from .serializers import OrderSerializer
+from order.models import OrderModel, OrderItemModel
+from order.serializers import OrderSerializer
+from order.tasks import send_order_telegram_message
 
 
 class OrderViewSet(viewsets.ViewSet):
@@ -67,6 +68,9 @@ class OrderViewSet(viewsets.ViewSet):
                     price=Decimal(variant.get("price", 0)),
                     quantity=item.get("quantity", 1),
                 )
+
+        
+        send_order_telegram_message(order)
 
         return Response({"detail": "Buyurtmalar yaratildi ✅"}, status=status.HTTP_201_CREATED)
 

@@ -6,3 +6,5 @@ class OrderConfig(AppConfig):
     name = 'order'
 
     verbose_name = "Менеджер по продукту"
+
+
